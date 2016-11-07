@@ -123,10 +123,10 @@ for name in [".text", ".data"]:
 			addr -= base_addr
 			#print "R_68K_32 %08X %08X+%08X" % (addr, symoffs, offs)
 			data, = struct.unpack(">I", progbits[name][addr:][:4])
-			newloc = symoffs+offs-base_addr+file_offs
+			newloc = (symoffs+offs-base_addr+file_offs) & 0xFFFFFFFF
 			print "R_68K_32 %08X %08X+%08X (%08X) -> %08X" % (addr, symoffs, offs, data, newloc)
 			reloc_addrs.append(addr+file_offs)
-			assert data == 0 or data == symoffs + offs
+			assert data == 0 or data == (symoffs + offs) & 0xFFFFFFFF
 			progbits[name] = (progbits[name][:addr]
 				+ struct.pack(">I", newloc)
 				+ progbits[name][addr+4:])
@@ -197,10 +197,13 @@ for v in reloc_addrs[1:]:
 	while (v-addr) > 254:
 		fp.write("\x01")
 		addr += 254
+
 	assert (v-addr) % 2 == 0
 	assert (v-addr) >= 2
 	assert (v-addr) <= 254
+
 	fp.write(chr(v-addr))
+
 	addr += (v-addr)
 	assert addr == v
 
