@@ -1,17 +1,17 @@
 STELF: ELF to Atari ST executable converter
 
-by GreaseMonkey, 2015 - Public Domain
+by GreaseMonkey, 2015, 2016, 2020 - Public Domain
 
 Here's my build file:
 
 	echo "=== C FILES ===" && \
-	m68k-linux-elf-gcc -flto -O3 -m68000 -msoft-float -fomit-frame-pointer -c -o main.o main.c -nostdlib && \
+	m68k-elf-gcc -flto -O3 -m68000 -msoft-float -fomit-frame-pointer -c -o main.o main.c -nostdlib && \
 	echo "=== HEADER ===" && \
-	m68k-linux-elf-as -m68000 -o afmt.o afmt.S && \
+	m68k-elf-as -m68000 -o afmt.o afmt.S && \
 	echo "=== LINK ===" && \
-	m68k-linux-elf-ld -flto -O3 --emit-relocs -T ST.ld -o output.elf afmt.o main.o -lgcc -lc && \
+	m68k-elf-ld -flto -O3 --emit-relocs -T ST.ld -o output.elf afmt.o main.o -lgcc -lc && \
 	echo "=== CONVERT ===" && \
-	python path/to/stelf.py output.elf output.prg && \
+	python3 path/to/stelf.py output.elf output.prg && \
 	true
 
 afmt.S in my case is just a simple booter which goes into supervisor mode then runs `_start`.

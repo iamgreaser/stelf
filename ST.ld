@@ -1,7 +1,7 @@
 /*OUTPUT_ARCH(m68000);*/
 /* change these to where things are really pointed */
-SEARCH_DIR("/usr/lib/gcc/m68k-none-elf/6.1.0/m68000");
-SEARCH_DIR("/usr/m68k-none-elf/lib");
+SEARCH_DIR("/usr/local/lib/gcc/m68k-none-elf/8.1.0/m68000");
+SEARCH_DIR("/usr/local/m68k-none-elf/lib");
 
 SECTIONS
 {
